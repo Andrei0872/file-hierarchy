@@ -6,11 +6,11 @@
     </div>
 
     <ul class="c-file-node__actions">
-      <li><button (click)="isCreatingFolder = true">+ folder</button></li>
-      <li><button (click)="isCreatingFile = true">+ file</button></li>
+      <li *ngIf="fileNode.is_dir"><button (click)="isCreatingFolder = true">+ folder</button></li>
+      <li *ngIf="fileNode.is_dir"><button (click)="isCreatingFile = true">+ file</button></li>
       <!-- <li><button>+ remove</button></li> -->
-      <li><button (click)="currentlyEditedVal = fileNode.name">. edit</button></li>
-      <li><button (click)="expandFolder(fileNode.id)">^ expand</button></li>
+      <li><button (click)="isEditing = true; currentlyEditedVal = fileNode.name">. edit</button></li>
+      <li *ngIf="fileNode.is_dir"><button (click)="expandFolder(fileNode.id)">^ expand</button></li>
     </ul>
   </div>
 
