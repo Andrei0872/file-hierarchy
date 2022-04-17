@@ -1,3 +1,12 @@
+<h2>Instructions:</h2>
+
+<ul>
+  <li>When creating a new file/directory, press <i>TAB</i> or <i>ENTER</i> to save</li>
+  <li>When creating a new file/directory, leave the input blank and trigger a blur event to cancel the process</li>
+  <li>When editing a new file/directory, press <i>TAB</i> to save</li>
+  <li>When editing a new file/directory, leave the input blank and trigger a blur event to cancel the process</li>
+</ul>
+
 <div class="c-toolbar">
   <form #f="ngForm" (ngSubmit)="addRootFolder(f.value)">
     <input [ngModel] name="name" placeholder="Folder name.." type="text">
@@ -5,7 +14,6 @@
   </form>
 </div>
 
-<!-- TODO: loading message -->
 <div
   *ngIf="(rootFolders$ | async) as rootFolders"
   class="c-root-folders"
