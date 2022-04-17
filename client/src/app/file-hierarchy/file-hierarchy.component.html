@@ -1,0 +1,20 @@
+<div class="c-toolbar">
+  <form #f="ngForm" (ngSubmit)="addRootFolder(f.value)">
+    <input [ngModel] name="name" placeholder="Folder name.." type="text">
+    <button type="submit">Add root folder</button>
+  </form>
+</div>
+
+<!-- TODO: loading message -->
+<div
+  *ngIf="(rootFolders$ | async) as rootFolders"
+  class="c-root-folders"
+>
+  <ng-container *ngIf="rootFolders.length; else empty">
+    <app-file-node *ngFor="let rootFolder of rootFolders" [fileNode]="rootFolder"></app-file-node>
+  </ng-container>
+
+  <ng-template #empty>
+    There are no folders.
+  </ng-template>
+</div>
