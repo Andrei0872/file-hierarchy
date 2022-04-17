@@ -1,4 +1,4 @@
-import { Component, EventEmitter, HostBinding, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, HostBinding, HostListener, Input, OnInit, Output } from '@angular/core';
 import { FileHierarchyService } from 'src/app/file-hierarchy.service';
 import { FileNode } from './file-node.model';
 
@@ -25,13 +25,10 @@ export class FileNodeComponent implements OnInit {
   isCreatingFolder = false;
   isCreatingFile = false;
   currentlyEditedVal = '';
+  isEditing = false;
 
   get isCreating () {
     return this.isCreatingFolder || this.isCreatingFile;
-  }
-
-  get isEditing () {
-    return this.currentlyEditedVal !== '';
   }
 
   constructor (private fileHierarchyService: FileHierarchyService) { }
@@ -50,6 +47,7 @@ export class FileNodeComponent implements OnInit {
 
   addFile (fileName: string) {
     if (!this.newFileNodeName) {
+      this.resetCreatingFields();
       return;
     }
 
@@ -68,6 +66,7 @@ export class FileNodeComponent implements OnInit {
 
   addFolder (folderName: string) {
     if (!this.newFileNodeName) {
+      this.resetCreatingFields();
       return;
     }
 
@@ -92,6 +91,11 @@ export class FileNodeComponent implements OnInit {
   }
 
   editFileNode (newName: string) {
+    if (!this.currentlyEditedVal) {
+      this.resetEditingFields();
+      return;
+    }
+    
     const data = {
       name: newName,
       id: this.fileNode.id
@@ -100,7 +104,7 @@ export class FileNodeComponent implements OnInit {
     this.fileHierarchyService.editFileNode(data)
       .subscribe(updatedFileNode => {
         this.fileNode = updatedFileNode
-        this.currentlyEditedVal = '';
+        this.resetEditingFields();
         this.childEdited.emit();
       });
   }
@@ -108,5 +112,10 @@ export class FileNodeComponent implements OnInit {
   private resetCreatingFields () {
     this.newFileNodeName = '';
     this.isCreatingFile = this.isCreatingFolder = false;
+  }
+
+  private resetEditingFields () {
+    this.isEditing = false;
+    this.currentlyEditedVal = '';
   }
 }
