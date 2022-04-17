@@ -1,5 +1,4 @@
-import { Component, HostBinding, Input, OnInit } from '@angular/core';
-import { catchError } from 'rxjs';
+import { Component, EventEmitter, HostBinding, Input, OnInit, Output } from '@angular/core';
 import { FileHierarchyService } from 'src/app/file-hierarchy.service';
 import { FileNode } from './file-node.model';
 
@@ -14,6 +13,9 @@ export class FileNodeComponent implements OnInit {
 
   @Input()
   paddingFactor = .5;
+
+  @Output()
+  childEdited = new EventEmitter();
 
   @HostBinding('style.padding-left') get paddingLeft () {
     return `${this.paddingFactor * .4}rem`;
@@ -35,6 +37,15 @@ export class FileNodeComponent implements OnInit {
   constructor (private fileHierarchyService: FileHierarchyService) { }
 
   ngOnInit(): void {
+  }
+
+  onChildEdited () {
+    this.fileNode.children?.sort((c1, c2) => c1.name.localeCompare(c2.name));
+
+    this.fileNode = {
+      ...this.fileNode,
+      children: [...this.fileNode.children ?? []]
+    };
   }
 
   addFile (fileName: string) {
@@ -90,6 +101,7 @@ export class FileNodeComponent implements OnInit {
       .subscribe(updatedFileNode => {
         this.fileNode = updatedFileNode
         this.currentlyEditedVal = '';
+        this.childEdited.emit();
       });
   }
 

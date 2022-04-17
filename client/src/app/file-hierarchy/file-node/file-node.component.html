@@ -8,7 +8,7 @@
     <ul class="c-file-node__actions">
       <li><button (click)="isCreatingFolder = true">+ folder</button></li>
       <li><button (click)="isCreatingFile = true">+ file</button></li>
-      <li><button>+ remove</button></li>
+      <!-- <li><button>+ remove</button></li> -->
       <li><button (click)="currentlyEditedVal = fileNode.name">. edit</button></li>
       <li><button (click)="expandFolder(fileNode.id)">^ expand</button></li>
     </ul>
@@ -19,6 +19,7 @@
       *ngFor="let fileNode of fileNode.children"
       [fileNode]="fileNode"
       [paddingFactor]="paddingFactor + 1"
+      (childEdited)="onChildEdited()"
     ></app-file-node>
   </div>
 
