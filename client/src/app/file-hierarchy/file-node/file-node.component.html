@@ -1,0 +1,29 @@
+<div class="c-file-node">
+  <div class="c-file-node__header" [class.is-dir]="fileNode.is_dir">
+    <div *ngIf="!isEditing" class="c-file-node__name">{{ fileNode?.name }}</div>
+    <div *ngIf="isEditing">
+      <input (blur)="editFileNode(currentlyEditedVal)" [(ngModel)]="currentlyEditedVal" type="text">
+    </div>
+
+    <ul class="c-file-node__actions">
+      <li><button (click)="isCreatingFolder = true">+ folder</button></li>
+      <li><button (click)="isCreatingFile = true">+ file</button></li>
+      <li><button>+ remove</button></li>
+      <li><button (click)="currentlyEditedVal = fileNode.name">. edit</button></li>
+      <li><button (click)="expandFolder(fileNode.id)">^ expand</button></li>
+    </ul>
+  </div>
+
+  <div *ngIf="fileNode.children?.length" class="c-file-node__body">
+    <app-file-node
+      *ngFor="let fileNode of fileNode.children"
+      [fileNode]="fileNode"
+      [paddingFactor]="paddingFactor + 1"
+    ></app-file-node>
+  </div>
+
+  <div *ngIf="isCreating" class="c-file-node__new">
+    <input *ngIf="isCreatingFolder && !isCreatingFile" [(ngModel)]="newFileNodeName" (keydown.enter)="addFolder(newFileNodeName)" (blur)="addFolder(newFileNodeName)" type="text">
+    <input *ngIf="isCreatingFile && !isCreatingFolder" [(ngModel)]="newFileNodeName" (keydown.enter)="addFile(newFileNodeName)" (blur)="addFile(newFileNodeName)" type="text">
+  </div>
+</div>

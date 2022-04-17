@@ -1,0 +1,33 @@
+:host {
+  display: flex;
+}
+
+.c-file-node {
+  min-width: 14rem;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid black;
+
+  &__header {
+    height: 1.1rem;
+    display: flex;
+    align-items: flex-start;
+    padding-block: .5rem;
+
+    &:hover > .c-file-node__actions {
+      display: flex;
+    }
+  }
+
+  &__header.is-dir {
+    background: gray;
+  }
+
+  &__actions {
+    display: none;
+    gap: 1rem;
+    margin: 0;
+    list-style: none;
+    justify-content: flex-start;
+  }
+}
